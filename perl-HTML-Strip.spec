@@ -4,18 +4,16 @@
 #
 Name     : perl-HTML-Strip
 Version  : 2.10
-Release  : 1
+Release  : 2
 URL      : https://cpan.metacpan.org/authors/id/K/KI/KILINRAX/HTML-Strip-2.10.tar.gz
 Source0  : https://cpan.metacpan.org/authors/id/K/KI/KILINRAX/HTML-Strip-2.10.tar.gz
 Source1  : http://http.debian.net/debian/pool/main/libh/libhtml-strip-perl/libhtml-strip-perl_2.10-1.debian.tar.xz
 Summary  : 'Perl extension for stripping HTML markup from text.'
 Group    : Development/Tools
 License  : Artistic-1.0 Artistic-1.0-Perl GPL-1.0
-Requires: perl-HTML-Strip-lib
-Requires: perl-HTML-Strip-license
-Requires: perl-HTML-Strip-man
-Requires: perl(Sub::Uplevel)
-Requires: perl(Test::Exception)
+Requires: perl-HTML-Strip-lib = %{version}-%{release}
+Requires: perl-HTML-Strip-license = %{version}-%{release}
+BuildRequires : buildreq-cpan
 BuildRequires : perl(Sub::Uplevel)
 BuildRequires : perl(Test::Exception)
 
@@ -26,10 +24,20 @@ This module strips HTML-like markup from text.
 It is written in XS, and thus about five times quicker than using
 regular expressions for the same task.
 
+%package dev
+Summary: dev components for the perl-HTML-Strip package.
+Group: Development
+Requires: perl-HTML-Strip-lib = %{version}-%{release}
+Provides: perl-HTML-Strip-devel = %{version}-%{release}
+
+%description dev
+dev components for the perl-HTML-Strip package.
+
+
 %package lib
 Summary: lib components for the perl-HTML-Strip package.
 Group: Libraries
-Requires: perl-HTML-Strip-license
+Requires: perl-HTML-Strip-license = %{version}-%{release}
 
 %description lib
 lib components for the perl-HTML-Strip package.
@@ -43,19 +51,11 @@ Group: Default
 license components for the perl-HTML-Strip package.
 
 
-%package man
-Summary: man components for the perl-HTML-Strip package.
-Group: Default
-
-%description man
-man components for the perl-HTML-Strip package.
-
-
 %prep
-tar -xf %{SOURCE1}
-cd ..
 %setup -q -n HTML-Strip-2.10
-mkdir -p %{_topdir}/BUILD/HTML-Strip-2.10/deblicense/
+cd ..
+%setup -q -T -D -n HTML-Strip-2.10 -b 1
+mkdir -p deblicense/
 mv %{_topdir}/BUILD/debian/* %{_topdir}/BUILD/HTML-Strip-2.10/deblicense/
 
 %build
@@ -80,12 +80,12 @@ make TEST_VERBOSE=1 test
 
 %install
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/usr/share/doc/perl-HTML-Strip
-cp deblicense/copyright %{buildroot}/usr/share/doc/perl-HTML-Strip/deblicense_copyright
+mkdir -p %{buildroot}/usr/share/package-licenses/perl-HTML-Strip
+cp deblicense/copyright %{buildroot}/usr/share/package-licenses/perl-HTML-Strip/deblicense_copyright
 if test -f Makefile.PL; then
-make pure_install PERL_INSTALL_ROOT=%{buildroot}
+make pure_install PERL_INSTALL_ROOT=%{buildroot} INSTALLDIRS=vendor
 else
-./Build install --installdirs=site --destdir=%{buildroot}
+./Build install --installdirs=vendor --destdir=%{buildroot}
 fi
 find %{buildroot} -type f -name .packlist -exec rm -f {} ';'
 find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null ';'
@@ -94,16 +94,16 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 
 %files
 %defattr(-,root,root,-)
-/usr/lib/perl5/site_perl/5.26.1/x86_64-linux-thread-multi/HTML/Strip.pm
+/usr/lib/perl5/vendor_perl/5.26.1/x86_64-linux-thread-multi/HTML/Strip.pm
+
+%files dev
+%defattr(-,root,root,-)
+/usr/share/man/man3/HTML::Strip.3
 
 %files lib
 %defattr(-,root,root,-)
-/usr/lib/perl5/site_perl/5.26.1/x86_64-linux-thread-multi/auto/HTML/Strip/Strip.so
+/usr/lib/perl5/vendor_perl/5.26.1/x86_64-linux-thread-multi/auto/HTML/Strip/Strip.so
 
 %files license
-%defattr(-,root,root,-)
-/usr/share/doc/perl-HTML-Strip/deblicense_copyright
-
-%files man
-%defattr(-,root,root,-)
-/usr/share/man/man3/HTML::Strip.3
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/perl-HTML-Strip/deblicense_copyright
