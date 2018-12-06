@@ -4,7 +4,7 @@
 #
 Name     : perl-HTML-Strip
 Version  : 2.10
-Release  : 7
+Release  : 8
 URL      : https://cpan.metacpan.org/authors/id/K/KI/KILINRAX/HTML-Strip-2.10.tar.gz
 Source0  : https://cpan.metacpan.org/authors/id/K/KI/KILINRAX/HTML-Strip-2.10.tar.gz
 Source1  : http://http.debian.net/debian/pool/main/libh/libhtml-strip-perl/libhtml-strip-perl_2.10-1.debian.tar.xz
@@ -56,7 +56,7 @@ license components for the perl-HTML-Strip package.
 cd ..
 %setup -q -T -D -n HTML-Strip-2.10 -b 1
 mkdir -p deblicense/
-mv %{_topdir}/BUILD/debian/* %{_topdir}/BUILD/HTML-Strip-2.10/deblicense/
+cp -r %{_topdir}/BUILD/debian/* %{_topdir}/BUILD/HTML-Strip-2.10/deblicense/
 
 %build
 export http_proxy=http://127.0.0.1:9/
