@@ -5,7 +5,7 @@
 #
 Name     : perl-HTML-Strip
 Version  : 2.12
-Release  : 26
+Release  : 27
 URL      : https://cpan.metacpan.org/authors/id/K/KI/KILINRAX/HTML-Strip-2.12.tar.gz
 Source0  : https://cpan.metacpan.org/authors/id/K/KI/KILINRAX/HTML-Strip-2.12.tar.gz
 Source1  : http://http.debian.net/debian/pool/main/libh/libhtml-strip-perl/libhtml-strip-perl_2.10-1.debian.tar.xz
